@@ -94,31 +94,17 @@ UI is live at: http://localhost:8501
 
 ## Architecture Overview
 
-```
-┌─────────────────────────────────────────────┐
-│           Streamlit UI  (port 8501)          │
-│  Chat Panel | Health Dashboard | Catalogue   │
-└──────────────────────┬──────────────────────┘
-                       │ HTTP + SSE
-┌──────────────────────▼──────────────────────┐
-│        FastAPI Backend  (port 8000)          │
-│  Intent Router | RAG Engine | Agent Loop     │
-│  MCP Server (stdio) | PII Guard | Metrics    │
-└──────┬──────────────────────────────┬────────┘
-       │                              │
-┌──────▼──────┐              ┌────────▼───────┐
-│  ChromaDB   │              │    DuckDB      │
-│  HNSW 768d  │              │  Metadata DB   │
-│  + BM25     │              │  6 tables      │
-└─────────────┘              └────────────────┘
-                       │
-               ┌────────▼────────┐
-               │   Groq API      │
-               │  llama3-8b      │
-               │  llama3-70b     │
-               │  llama-3.3-70b  │
-               └─────────────────┘
-```
+*(Note: The simplified AI-Powered Assistant Architecture image was rejected because its content completely overlapped with the End-to-End Flow diagram below.)*
+
+### 1. End-to-End RAG & Agent Flow
+This diagram illustrates the complete lifecycle of a user request—from the Streamlit UI, through the FastAPI Intent Classifier, down into the RAG Pipeline (for knowledge) or Agent Loop (for actions), and back to the user.
+
+![End-to-End RAG and Agent Flow](./docs/images/rag_agent_flow.png)
+
+### 2. Technology Stack Overview
+A look at the underlying technologies powering PipelineMind, including our embedding models, vector stores, and async backend.
+
+![Technology Stack Overview](./docs/images/tech_stack.png)
 
 Three-tier architecture: Streamlit UI → FastAPI Orchestration Backend → Data Layer + LLM.
 
